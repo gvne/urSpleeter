@@ -22,6 +22,9 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "spleeter/spleeter.h"
+
+#include <future>
+#include <stack>
 //[/Headers]
 
 //==============================================================================
@@ -59,6 +62,11 @@ private:
   TextButton split_two_stems_button_;
   TextButton split_four_stems_button_;
   TextButton split_five_stems_button_;
+  
+  mutable double progress_;
+  ProgressBar progress_bar_;
+  
+  mutable std::stack<std::future<void>> processes_;
   //[/UserVariables]
 
   //==============================================================================

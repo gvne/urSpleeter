@@ -28,7 +28,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-SpleeterComponent::SpleeterComponent() {
+SpleeterComponent::SpleeterComponent()
+    : progress_(0), progress_bar_(progress_) {
   //[Constructor_pre] You can add your own custom stuff here..
   //[/Constructor_pre]
 
@@ -65,6 +66,8 @@ SpleeterComponent::SpleeterComponent() {
   split_five_stems_button_.onClick =
       std::bind(&SpleeterComponent::split, this, spleeter::FiveStems);
 
+  addAndMakeVisible(&progress_bar_);
+
   updateComponent();
   //[/Constructor]
 }
@@ -74,6 +77,11 @@ SpleeterComponent::~SpleeterComponent() {
   //[/Destructor_pre]
 
   //[Destructor]. You can add your own custom destruction code here..
+  // wait for every processes to be complete
+  while (!processes_.empty()) {
+    processes_.top().wait();
+    processes_.pop();
+  }
   //[/Destructor]
 }
 
@@ -122,6 +130,12 @@ void SpleeterComponent::resized() {
   split_five_stems_button_area.setY(split_five_stems_button_area.getY() +
                                     2 * element_width);
   split_five_stems_button_.setBounds(split_five_stems_button_area);
+
+  // Progress
+  Rectangle<int> progress_area(element_width, area.getHeight() - element_width * 2,
+                               area.getWidth() - element_width * 2,
+                               element_width);
+  progress_bar_.setBounds(progress_area);
   //[/UserPreResize]
 
   //[UserResized] Add your own custom resize handling here..
@@ -149,11 +163,25 @@ void SpleeterComponent::updateComponent() {
 }
 
 void SpleeterComponent::split(spleeter::SeparationType type) const {
+  // cleanup the processes_
+  while (!processes_.empty() &&
+         processes_.top().wait_for(std::chrono::seconds(0)) ==
+             std::future_status::ready) {
+    processes_.pop();
+  }
+
   FileChooser chooser("Select an export folder");
   if (!chooser.browseForDirectory()) {
     return;
   }
-  runSpleeter(selected_file_path_, type, chooser.getResult().getFullPathName());
+  auto output_path = chooser.getResult().getFullPathName();
+  auto source_path = selected_file_path_;
+  processes_.emplace(
+      std::async(std::launch::async, [source_path, type, output_path, this]() {
+        progress_ = -1;
+        runSpleeter(source_path, type, output_path);
+        progress_ = 1;
+      }));
 }
 //[/MiscUserCode]
 
