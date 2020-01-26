@@ -9,29 +9,28 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent()
-{
-    setSize (600, 400);
+MainComponent::MainComponent() {
+  setSize(600, 400);
+  addAndMakeVisible(&spleeter_component_);
 }
 
-MainComponent::~MainComponent()
-{
-}
+MainComponent::~MainComponent() {}
 
 //==============================================================================
-void MainComponent::paint (Graphics& g)
-{
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+void MainComponent::paint(Graphics &g) {
+  // (Our component is opaque, so we must completely fill the background with a
+  // solid colour)
+  g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 
-    g.setFont (Font (16.0f));
-    g.setColour (Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
+  g.setFont(Font(16.0f));
+  g.setColour(Colours::white);
+  g.drawText("Hello World!", getLocalBounds(), Justification::centred, true);
 }
 
-void MainComponent::resized()
-{
-    // This is called when the MainComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
+void MainComponent::resized() {
+  // This is called when the MainComponent is resized.
+  // If you add any child components, this is where you should
+  // update their positions.
+  auto area = getLocalBounds();
+  spleeter_component_.setBounds(area);
 }
