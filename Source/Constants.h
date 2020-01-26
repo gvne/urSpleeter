@@ -11,7 +11,7 @@
 #pragma once
 
 // The number of elements in a component row
-const unsigned int kGridElementCount = 20;
+const unsigned int kGridElementCount = 14;
 
 inline unsigned int getGridWidth(int component_width) {
   return component_width / kGridElementCount;
