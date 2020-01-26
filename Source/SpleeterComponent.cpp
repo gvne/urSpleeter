@@ -22,6 +22,7 @@
 
 #include "SpleeterComponent.h"
 #include "Constants.h"
+#include "SpleeterProcessor.h"
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
@@ -53,10 +54,16 @@ SpleeterComponent::SpleeterComponent() {
 
   addAndMakeVisible(&split_two_stems_button_);
   split_two_stems_button_.setButtonText("Split into Two stems !");
+  split_two_stems_button_.onClick =
+      std::bind(&SpleeterComponent::split, this, spleeter::TwoStems);
   addAndMakeVisible(&split_four_stems_button_);
   split_four_stems_button_.setButtonText("Split into Four stems !");
+  split_four_stems_button_.onClick =
+      std::bind(&SpleeterComponent::split, this, spleeter::FourStems);
   addAndMakeVisible(&split_five_stems_button_);
   split_five_stems_button_.setButtonText("Split into Five stems !");
+  split_five_stems_button_.onClick =
+      std::bind(&SpleeterComponent::split, this, spleeter::FiveStems);
 
   updateComponent();
   //[/Constructor]
@@ -106,11 +113,11 @@ void SpleeterComponent::resized() {
                                     selected_file_label_area.getWidth() +
                                     element_width);
   split_four_stems_button_area.setWidth(element_width * 3);
-  split_two_stems_button_.setBounds(split_four_stems_button_area);
+  split_four_stems_button_.setBounds(split_four_stems_button_area);
   auto split_two_stems_button_area = split_four_stems_button_area;
   split_two_stems_button_area.setY(split_two_stems_button_area.getY() -
                                    2 * element_width);
-  split_four_stems_button_.setBounds(split_two_stems_button_area);
+  split_two_stems_button_.setBounds(split_two_stems_button_area);
   auto split_five_stems_button_area = split_four_stems_button_area;
   split_five_stems_button_area.setY(split_five_stems_button_area.getY() +
                                     2 * element_width);
@@ -139,6 +146,14 @@ void SpleeterComponent::updateComponent() {
   }
   selected_file_label_.setText(selected_file_path_,
                                NotificationType::dontSendNotification);
+}
+
+void SpleeterComponent::split(spleeter::SeparationType type) const {
+  FileChooser chooser("Select an export folder");
+  if (!chooser.browseForFileToOpen()) {
+    return;
+  }
+  runSpleeter(selected_file_path_, type, chooser.getResult().getFullPathName());
 }
 //[/MiscUserCode]
 

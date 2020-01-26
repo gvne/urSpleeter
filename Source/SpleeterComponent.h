@@ -21,6 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "spleeter/spleeter.h"
 //[/Headers]
 
 //==============================================================================
@@ -47,6 +48,7 @@ public:
 private:
   void setSelectedFilePath(const String &path);
   void updateComponent();
+  void split(spleeter::SeparationType type) const;
 
   //[UserVariables]   -- You can add your own custom variables in this section.
   TextButton open_button_;

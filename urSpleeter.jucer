@@ -5,6 +5,14 @@
               defines="SPLEETER_MODELS=&quot;../../external/spleeterpp/models&quot;">
   <MAINGROUP id="PPVP5w" name="urSpleeter">
     <GROUP id="{C8157A69-EB35-D06C-F877-F1706F4A12B9}" name="Source">
+      <FILE id="entJr9" name="SpleeterProcessor.cpp" compile="1" resource="0"
+            file="Source/SpleeterProcessor.cpp"/>
+      <FILE id="QjY6XN" name="SpleeterProcessor.h" compile="0" resource="0"
+            file="Source/SpleeterProcessor.h"/>
+      <FILE id="HfQNDZ" name="ResourceFolder_osx.mm" compile="1" resource="0"
+            file="Source/ResourceFolder_osx.mm"/>
+      <FILE id="yjqchD" name="ResourceFolder.h" compile="0" resource="0"
+            file="Source/ResourceFolder.h"/>
       <FILE id="xZ0XTH" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
       <FILE id="cdltJl" name="SpleeterComponent.cpp" compile="1" resource="0"
             file="Source/SpleeterComponent.cpp"/>
@@ -18,7 +26,7 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="spleeter&#10;tensorflow_cc"
-               extraLinkerFlags="-L../../external/spleeterpp/lib">
+               extraLinkerFlags="-L../../external/spleeterpp/lib" postbuildCommand="TENSORFLOW_LIB_PATH=$CODESIGNING_FOLDER_PATH/Contents/MacOS/libtensorflow_cc.so.1&#10;rm $TENSORFLOW_LIB_PATH&#10;cp ../../external/spleeterpp/lib/libtensorflow_cc.so $TENSORFLOW_LIB_PATH&#10;&#10;MODELS_PATH=$CODESIGNING_FOLDER_PATH/Contents/Resources/models&#10;rm -rf $MODELS_PATH&#10;cp -r ../../external/spleeterpp/models $MODELS_PATH">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" customXcodeFlags="LD_RUNPATH_SEARCH_PATHS=@executable_path"/>
         <CONFIGURATION isDebug="0" name="Release" customXcodeFlags="LD_RUNPATH_SEARCH_PATHS=@executable_path"/>
