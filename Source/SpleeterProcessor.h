@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "../JuceLibraryCode/JuceHeader.h"
 #include "spleeter/spleeter.h"
 
-void runSpleeter(const String& input_file, spleeter::SeparationType type, const String& output_dir);
+void runSpleeter(const String &input_file, spleeter::SeparationType type,
+                 const String &output_dir);

@@ -41,7 +41,7 @@ SpleeterComponent::SpleeterComponent() {
   addAndMakeVisible(&open_button_);
   open_button_.setButtonText("Open...");
   open_button_.onClick = [this]() {
-    FileChooser chooser("Select a file to split...", {}, "*.wav;*.mp3", true);
+    FileChooser chooser("Select a file to split...", {}, "*.wav;*.aiff", true);
     if (!chooser.browseForFileToOpen()) {
       return;
     }
@@ -150,7 +150,7 @@ void SpleeterComponent::updateComponent() {
 
 void SpleeterComponent::split(spleeter::SeparationType type) const {
   FileChooser chooser("Select an export folder");
-  if (!chooser.browseForFileToOpen()) {
+  if (!chooser.browseForDirectory()) {
     return;
   }
   runSpleeter(selected_file_path_, type, chooser.getResult().getFullPathName());
